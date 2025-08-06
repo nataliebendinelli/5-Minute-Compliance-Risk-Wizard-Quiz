@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5-Minute Compliance Risk Wizard - Accrue</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <!-- Header - Always visible -->
+        <header class="quiz-header" id="quizHeader">
+            <img src="accrue-logo copy 2.png" alt="Accrue" class="logo-img">
+            <div class="tagline">5-Minute Compliance Risk Wizard</div>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-container" id="progressContainer" style="display: none;">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="questionNumber">Question 1 of 12</span>
+                <span id="timeRemaining">2 minutes left</span>
+            </div>
+        </div>
+
+        <!-- Quiz Start Screen -->
+        <div id="startScreen" class="screen active">
+            <div class="start-content">
+                <h1>Is Your Business at Risk of an IRS Audit?</h1>
+                <p class="subtitle">Find out in just 5 minutes with our free compliance risk assessment</p>
+                
+                <div class="benefits">
+                    <div class="benefit-item">
+                        <span class="benefit-icon">✓</span>
+                        <span>Identify your biggest compliance vulnerabilities</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">✓</span>
+                        <span>Get your personalized risk score</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">✓</span>
+                        <span>Receive a custom action plan to protect your business</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="startQuiz()">Start Risk Assessment</button>
+                
+                <p class="disclaimer">No credit card required • 100% confidential</p>
+            </div>
+        </div>
+
+        <!-- Quiz Question Screen -->
+        <div id="questionScreen" class="screen">
+            <div class="question-content">
+                <div class="section-label" id="sectionLabel"></div>
+                <h2 id="questionText"></h2>
+                <div id="answerOptions" class="answer-options"></div>
+                <div class="navigation-buttons">
+                    <button class="btn btn-secondary" id="backBtn" onclick="previousQuestion()">Back</button>
+                    <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>Next</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lead Capture Screen -->
+        <div id="leadCaptureScreen" class="screen">
+            <div class="lead-capture-content">
+                <div class="risk-preview">
+                    <h2>Your Risk Score is Ready!</h2>
+                    <div class="score-teaser">
+                        <div class="score-indicator" id="scoreTeaserIndicator"></div>
+                        <p class="score-message" id="scoreTeaserMessage"></p>
+                    </div>
+                </div>
+
+                <div class="lead-form">
+                    <h3>Get Your Personalized Compliance Action Plan</h3>
+                    <p>Your custom PDF includes:</p>
+                    <ul class="deliverable-list">
+                        <li>Step-by-step risk mitigation plan</li>
+                        <li>Compliance checklist with deadlines</li>
+                        <li>Resources and templates</li>
+                        <li>Legal contact recommendations</li>
+                    </ul>
+
+                    <form id="leadForm" onsubmit="submitLeadForm(event)">
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Email Address*" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" id="firstName" name="firstName" placeholder="First Name*" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="companyName" name="companyName" placeholder="Company Name*" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <select id="employeeCount" name="employeeCount" required>
+                                <option value="">Number of Employees*</option>
+                                <option value="1-10">1-10</option>
+                                <option value="11-25">11-25</option>
+                                <option value="26-50">26-50</option>
+                                <option value="51-100">51-100</option>
+                                <option value="100+">100+</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="phone" name="phone" placeholder="Phone Number (Optional)">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Get My Action Plan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="screen">
+            <div class="results-content">
+                <!-- Risk Score Hero -->
+                <div class="risk-score-hero">
+                    <div class="alert-icon">⚠️</div>
+                    <h1>AUDIT RISK ALERT</h1>
+                    <div class="score-display">
+                        <div class="score-number" id="finalScore"></div>
+                        <div class="score-label" id="riskLevel"></div>
+                    </div>
+                    <p class="risk-message" id="riskMessage"></p>
+                </div>
+
+                <!-- Risk Breakdown -->
+                <div class="risk-breakdown">
+                    <h2>Your Risk Breakdown</h2>
+                    <div id="categoryBreakdown" class="category-cards"></div>
+                </div>
+
+                <!-- Immediate Actions -->
+                <div class="immediate-actions" id="immediateActions"></div>
+
+                <!-- Industry Comparison -->
+                <div class="industry-comparison">
+                    <h2>How You Compare to Similar Businesses</h2>
+                    <div class="comparison-chart">
+                        <div class="comparison-bar">
+                            <div class="bar-label">Your Risk Score</div>
+                            <div class="bar-container">
+                                <div class="bar-fill your-score" id="yourScoreBar"></div>
+                                <span class="bar-value" id="yourScoreValue"></span>
+                            </div>
+                        </div>
+                        <div class="comparison-bar">
+                            <div class="bar-label">Industry Average</div>
+                            <div class="bar-container">
+                                <div class="bar-fill industry-avg" style="width: 45%;"></div>
+                                <span class="bar-value">45/100</span>
+                            </div>
+                        </div>
+                        <div class="comparison-bar">
+                            <div class="bar-label">Best-in-Class</div>
+                            <div class="bar-container">
+                                <div class="bar-fill best-in-class" style="width: 15%;"></div>
+                                <span class="bar-value">15/100</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="comparison-message" id="comparisonMessage"></p>
+                </div>
+
+                <!-- Social Proof -->
+                <div class="social-proof">
+                    <h2>Businesses That Fixed Their Compliance</h2>
+                    <div class="testimonial-cards">
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"We had a risk score of 78. After implementing automated payroll, we dropped to 12 within 90 days. No more sleepless nights worrying about audits."</p>
+                            <p class="testimonial-author">- Sarah M., Denver Construction (42 employees)</p>
+                        </div>
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"The IRS audit cost us $23,000. If I'd known about these risks earlier, I could have prevented it entirely."</p>
+                            <p class="testimonial-author">- Mike T., Phoenix Restaurant Group (28 employees)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="results-cta">
+                    <button class="btn btn-primary" onclick="scheduleConsultation()">Schedule Free Compliance Review</button>
+                    <button class="btn btn-secondary" onclick="downloadActionPlan()">Download Action Plan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz-data.js"></script>
+    <script src="quiz-logic.js"></script>
+</body>
+</html>
