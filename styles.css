@@ -406,7 +406,7 @@ body {
 
 .risk-score-hero {
     text-align: center;
-    padding: 40px;
+    padding: 48px 40px;
     background: var(--primary-color);
     border-radius: 16px;
     color: white;
@@ -429,12 +429,13 @@ body {
 }
 
 .score-zone {
-    font-size: 32px;
-    font-weight: bold;
+    font-size: 56px;
+    font-weight: 900;
     color: white;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    line-height: 1.1;
 }
 
 .score-number {

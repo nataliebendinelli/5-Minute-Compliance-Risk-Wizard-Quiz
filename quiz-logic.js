@@ -52,9 +52,6 @@ function displayQuestion() {
         document.getElementById('riskDescription').textContent = question.riskDescription;
     }
     
-    // Update section label
-    document.getElementById('sectionLabel').textContent = section.name;
-    
     // Update question text
     document.getElementById('questionText').textContent = question.text;
     

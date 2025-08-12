@@ -120,7 +120,7 @@ const quizData = {
             min: 10,
             max: 13,
             label: 'Medium Audit Risk',
-            zone: '⚠️ CAUTION ZONE',
+            zone: 'CAUTION ZONE!!!',
             message: "You're doing some things right, but several gaps could attract IRS attention",
             color: '#F59E0B',
             action: 'Time to tighten up your compliance practices'
@@ -129,8 +129,8 @@ const quizData = {
             min: 14,
             max: 18,
             label: 'High Audit Risk',
-            zone: '❗ DANGER ZONE',
-            message: "Multiple red flags detected. You're in the danger zone for triggering an audit.",
+            zone: 'DANGER ZONE!!!',
+            message: "You are at risk for an audit. 93% of business owners with this score receive an audit!!!",
             color: '#EF4444',
             action: 'Immediate action needed on compliance gaps'
         },
@@ -138,7 +138,7 @@ const quizData = {
             min: 19,
             max: 25,
             label: 'Critical Audit Risk',
-            zone: '🚨 CRITICAL ZONE',
+            zone: 'CRITICAL ZONE!!!',
             message: "You're practically guaranteed to face an audit. Every answer indicates major compliance failures",
             color: '#DC2626',
             action: 'Seek professional help immediately'
