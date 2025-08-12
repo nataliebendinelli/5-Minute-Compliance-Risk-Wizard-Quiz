@@ -277,7 +277,46 @@ function calculateResults() {
 function displayRiskMeaning(riskLevel) {
     const riskDetails = document.getElementById('riskDetails');
     
-    if (riskLevel.label === 'High Risk') {
+    if (riskLevel.label === 'Critical Audit Risk') {
+        riskDetails.innerHTML = `
+            <div class="risk-meaning-card critical-risk">
+                <div class="risk-status-badge critical">
+                    <span class="badge-icon">🚨</span>
+                    <span class="badge-text">CRITICAL AUDIT RISK</span>
+                </div>
+                
+                <div class="risk-impacts">
+                    <div class="impact-item">
+                        <div class="impact-icon">⚡</div>
+                        <div class="impact-content">
+                            <h4>Audit Risk: <span class="highlight-red">GUARANTEED</span></h4>
+                            <p>95% chance of triggering an IRS audit within 12 months</p>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-item">
+                        <div class="impact-icon">💰</div>
+                        <div class="impact-content">
+                            <h4>Financial Exposure: <span class="highlight-red">$50,000 - $100,000+</span></h4>
+                            <p>Catastrophic penalties and back taxes likely</p>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-item">
+                        <div class="impact-icon">⏰</div>
+                        <div class="impact-content">
+                            <h4>Action Required: <span class="highlight-red">IMMEDIATELY</span></h4>
+                            <p>Every day of delay increases your liability</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="risk-summary">
+                    <p class="summary-text">You're practically guaranteed to face an audit. Every answer indicates major compliance failures. Seek professional help immediately.</p>
+                </div>
+            </div>
+        `;
+    } else if (riskLevel.label === 'High Audit Risk') {
         riskDetails.innerHTML = `
             <div class="risk-meaning-card high-risk">
                 <div class="risk-status-badge critical">
@@ -321,7 +360,7 @@ function displayRiskMeaning(riskLevel) {
             <div class="risk-meaning-card medium-risk">
                 <div class="risk-status-badge warning">
                     <span class="badge-icon">⚠️</span>
-                    <span class="badge-text">MODERATE RISK LEVEL</span>
+                    <span class="badge-text">MEDIUM AUDIT RISK</span>
                 </div>
                 
                 <div class="risk-impacts">
@@ -390,27 +429,67 @@ function showResults() {
     // Hide progress bar on results
     document.getElementById('progressContainer').style.display = 'none';
     
+    // Check for critical D answers on Q1 or Q2
+    const hasCriticalFlags = checkCriticalFlags();
+    
     // Get risk level
     const riskLevel = getRiskLevel(totalScore);
     
-    // Display score indicator (red or yellow circle)
+    // Display score indicator (red for critical/high, yellow for medium)
     const scoreIndicator = document.getElementById('scoreIndicator');
-    const riskIcon = riskLevel.label === 'High Risk' ? '🔴' : '🟡';
+    let riskIcon;
+    if (riskLevel.label === 'Critical Audit Risk') {
+        riskIcon = '🚨';
+    } else if (riskLevel.label === 'High Audit Risk') {
+        riskIcon = '🔴';
+    } else {
+        riskIcon = '🟡';
+    }
     scoreIndicator.innerHTML = `<span style="font-size: 72px;">${riskIcon}</span>`;
     
-    // Display score
-    document.getElementById('finalScore').textContent = `${totalScore}/20`;
+    // Display score (now out of 25 instead of 20)
+    document.getElementById('finalScore').textContent = `${totalScore}/25`;
     
     // Display risk level
     document.getElementById('riskLevel').textContent = riskLevel.label;
     document.getElementById('riskLevel').style.color = riskLevel.color;
     document.getElementById('riskMessage').textContent = riskLevel.message;
     
+    // Display critical alert if needed
+    if (hasCriticalFlags) {
+        displayCriticalAlert();
+    }
+    
     // Display what this means
     displayRiskMeaning(riskLevel);
     
     // Display category breakdown
     displayCategoryBreakdown();
+}
+
+// Check for critical D answers on Q1 or Q2
+function checkCriticalFlags() {
+    // Check if user selected D answer (index 3) on question 1 or 2
+    const q1Answer = userAnswers[1];
+    const q2Answer = userAnswers[2];
+    
+    return (q1Answer && q1Answer.value === 3) || (q2Answer && q2Answer.value === 3);
+}
+
+// Display critical alert for D answers on Q1 or Q2
+function displayCriticalAlert() {
+    const riskDetails = document.getElementById('riskDetails');
+    const alertHtml = `
+        <div class="critical-alert">
+            <div class="alert-header">
+                <span class="alert-icon">⚠️</span>
+                <span class="alert-title">IMMEDIATE ATTENTION REQUIRED</span>
+            </div>
+            <p class="alert-message">Your answers on employee classification and/or tax deposits are automatic audit triggers regardless of your total score.</p>
+        </div>
+    `;
+    // Prepend the alert to the risk details
+    riskDetails.innerHTML = alertHtml + riskDetails.innerHTML;
 }
 
 // Get risk level based on score
@@ -420,7 +499,7 @@ function getRiskLevel(score) {
             return level;
         }
     }
-    return quizData.riskLevels.low;
+    return quizData.riskLevels.moderate;
 }
 
 // Display category breakdown
