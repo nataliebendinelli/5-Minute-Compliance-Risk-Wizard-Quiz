@@ -105,7 +105,7 @@ const quizData = {
             min: 10,
             max: 14,
             label: 'Medium Risk',
-            message: 'Important areas need attention',
+            message: 'You could be at risk of a $25,000 audit',
             color: '#F59E0B',
             action: 'Targeted improvements recommended'
         },
@@ -113,7 +113,7 @@ const quizData = {
             min: 15,
             max: 20,
             label: 'High Risk',
-            message: 'Multiple compliance gaps identified',
+            message: 'You could be at risk of a $50,000+ audit',
             color: '#EF4444',
             action: 'Immediate attention required'
         }
