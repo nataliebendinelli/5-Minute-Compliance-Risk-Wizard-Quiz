@@ -38,6 +38,8 @@ const quizData = {
         {
             id: 1,
             section: 'classification',
+            riskTitle: 'Risk 1: Employee Misclassification',
+            riskDescription: 'Misclassifying employees as contractors can trigger IRS audits and result in penalties up to $50,000 per worker plus back taxes.',
             text: 'What type of workers do you mostly have?',
             type: 'single',
             answers: [
@@ -52,6 +54,8 @@ const quizData = {
         {
             id: 2,
             section: 'tax',
+            riskTitle: 'Risk 2: Manual Tax Deposits',
+            riskDescription: 'Late or incorrect tax deposits are the #1 trigger for IRS audits, with penalties accruing daily at 15% interest rates.',
             text: 'How do you handle payroll tax deposits?',
             type: 'single',
             answers: [
@@ -66,6 +70,8 @@ const quizData = {
         {
             id: 3,
             section: 'multistate',
+            riskTitle: 'Risk 3: Multi-State Compliance',
+            riskDescription: 'Each state has unique labor laws and tax requirements. Non-compliance can result in fines from multiple jurisdictions simultaneously.',
             text: 'Where do your employees work?',
             type: 'single',
             answers: [
@@ -80,11 +86,13 @@ const quizData = {
         {
             id: 4,
             section: 'recordkeeping',
+            riskTitle: 'Risk 4: Outdated Record Keeping',
+            riskDescription: 'The IRS requires 3-7 years of employment records. Missing documentation during an audit results in automatic penalties.',
             text: 'How organized are your employee records?',
             type: 'single',
             answers: [
                 { text: 'Digital system with everything backed up', value: 2 },
-                { text: 'Mostly organized, some gaps', value: 3 },
+                { text: 'Digital system with no backup', value: 3 },
                 { text: 'Paper files in various places', value: 4 },
                 { text: 'What records?', value: 5 }
             ]
@@ -94,6 +102,8 @@ const quizData = {
         {
             id: 5,
             section: 'overtime',
+            riskTitle: 'Risk 5: Overtime Calculation Errors',
+            riskDescription: 'Incorrect overtime calculations can lead to Department of Labor investigations and employee lawsuits with triple damages.',
             text: 'How do you calculate overtime?',
             type: 'single',
             answers: [
@@ -110,6 +120,7 @@ const quizData = {
             min: 10,
             max: 13,
             label: 'Medium Audit Risk',
+            zone: '⚠️ CAUTION ZONE',
             message: "You're doing some things right, but several gaps could attract IRS attention",
             color: '#F59E0B',
             action: 'Time to tighten up your compliance practices'
@@ -118,7 +129,8 @@ const quizData = {
             min: 14,
             max: 18,
             label: 'High Audit Risk',
-            message: "Multiple red flags detected. You're in the danger zone for triggering an audit",
+            zone: '❗ DANGER ZONE',
+            message: "Multiple red flags detected. You're in the danger zone for triggering an audit.",
             color: '#EF4444',
             action: 'Immediate action needed on compliance gaps'
         },
@@ -126,6 +138,7 @@ const quizData = {
             min: 19,
             max: 25,
             label: 'Critical Audit Risk',
+            zone: '🚨 CRITICAL ZONE',
             message: "You're practically guaranteed to face an audit. Every answer indicates major compliance failures",
             color: '#DC2626',
             action: 'Seek professional help immediately'

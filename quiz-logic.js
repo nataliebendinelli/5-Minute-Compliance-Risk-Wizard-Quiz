@@ -46,6 +46,12 @@ function displayQuestion() {
         return;
     }
     
+    // Update risk header
+    if (question.riskTitle) {
+        document.getElementById('riskTitle').textContent = question.riskTitle;
+        document.getElementById('riskDescription').textContent = question.riskDescription;
+    }
+    
     // Update section label
     document.getElementById('sectionLabel').textContent = section.name;
     
@@ -435,6 +441,9 @@ function showResults() {
     // Get risk level
     const riskLevel = getRiskLevel(totalScore);
     
+    // Display zone label
+    document.getElementById('scoreZone').textContent = riskLevel.zone;
+    
     // Display score indicator (red for critical/high, yellow for medium)
     const scoreIndicator = document.getElementById('scoreIndicator');
     let riskIcon;
@@ -452,7 +461,7 @@ function showResults() {
     
     // Display risk level
     document.getElementById('riskLevel').textContent = riskLevel.label;
-    document.getElementById('riskLevel').style.color = riskLevel.color;
+    document.getElementById('riskLevel').style.color = 'white';  // Force white color
     document.getElementById('riskMessage').textContent = riskLevel.message;
     
     // Display critical alert if needed
