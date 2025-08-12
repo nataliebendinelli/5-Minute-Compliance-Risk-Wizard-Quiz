@@ -159,6 +159,12 @@ function restorePreviousAnswer(question) {
 function nextQuestion() {
     const question = quizData.questions[currentQuestionIndex];
     
+    // Check if current question is answered
+    if (!userAnswers[question.id]) {
+        alert('Please answer this question before proceeding.');
+        return;
+    }
+    
     // Handle branching logic
     if (question.branching && userAnswers[question.id]) {
         const answer = question.answers[userAnswers[question.id].value];
@@ -179,6 +185,19 @@ function nextQuestion() {
     }
     
     if (currentQuestionIndex >= quizData.questions.length) {
+        // Check if all questions are answered before showing results
+        const allQuestionsAnswered = quizData.questions.every(q => userAnswers[q.id]);
+        
+        if (!allQuestionsAnswered) {
+            // Find first unanswered question
+            const unansweredIndex = quizData.questions.findIndex(q => !userAnswers[q.id]);
+            currentQuestionIndex = unansweredIndex;
+            displayQuestion();
+            updateProgress();
+            alert('Please answer all questions before viewing results.');
+            return;
+        }
+        
         // Quiz completed, show lead capture
         calculateResults();
         showLeadCapture();
