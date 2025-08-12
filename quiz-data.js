@@ -38,13 +38,13 @@ const quizData = {
         {
             id: 1,
             section: 'classification',
-            text: 'How do you classify your workers?',
+            text: 'What type of workers do you mostly have?',
             type: 'single',
             answers: [
-                { text: 'All employees on payroll', value: 2 },
-                { text: 'Mix of employees and contractors', value: 3 },
-                { text: 'Mostly contractors', value: 4 },
-                { text: 'Not sure about some workers', value: 5, criticalFlag: true }
+                { text: 'Regular full-time employees', value: 2 },
+                { text: 'Mix of employees and independent contractors', value: 3 },
+                { text: 'Mostly independent contractors', value: 4 },
+                { text: "I'm not really sure of the difference", value: 5, criticalFlag: true }
             ]
         },
         
