@@ -806,3 +806,182 @@ body {
         font-size: 36px;
     }
 }
+
+/* Risk Meaning Section Styles */
+.risk-meaning {
+    margin: 40px 0;
+    padding: 0 20px;
+}
+
+.risk-meaning h2 {
+    font-size: 28px;
+    color: #1a1a1a;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.risk-meaning-card {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.risk-meaning-card.high-risk {
+    border-left: 6px solid #ef4444;
+}
+
+.risk-meaning-card.medium-risk {
+    border-left: 6px solid #f59e0b;
+}
+
+.risk-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 30px;
+    margin-bottom: 24px;
+}
+
+.risk-status-badge.critical {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.risk-status-badge.warning {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge-icon {
+    font-size: 20px;
+}
+
+.badge-text {
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.risk-impacts {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 24px 0;
+}
+
+.impact-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    background: #f9fafb;
+    border-radius: 12px;
+}
+
+.impact-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+.impact-content h4 {
+    font-size: 16px;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+}
+
+.impact-content p {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.highlight-red {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+.highlight-yellow {
+    color: #d97706;
+    font-weight: 700;
+}
+
+.risk-summary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 24px;
+}
+
+.summary-text {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Consultation Section */
+.consultation-section {
+    background: #f3f4f6;
+    padding: 48px 32px;
+    border-radius: 16px;
+    margin: 40px 20px;
+    text-align: center;
+}
+
+.consultation-section h2 {
+    font-size: 28px;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+}
+
+.consultation-offer {
+    font-size: 20px;
+    color: #059669;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.consultation-benefits {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+
+.consultation-benefits p {
+    margin: 0;
+    color: #4b5563;
+    font-size: 16px;
+}
+
+.btn-large {
+    padding: 18px 48px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Thank You Screen */
+.thank-you-content {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.success-icon {
+    font-size: 72px;
+    margin-bottom: 24px;
+}
+
+.thank-you-message {
+    font-size: 20px;
+    color: #4b5563;
+    margin-bottom: 16px;
+}
+
+.thank-you-submessage {
+    font-size: 18px;
+    color: #059669;
+    font-weight: 600;
+    margin-bottom: 32px;
+}

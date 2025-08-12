@@ -198,9 +198,9 @@ function nextQuestion() {
             return;
         }
         
-        // Quiz completed, show lead capture
+        // Quiz completed, show results directly
         calculateResults();
-        showLeadCapture();
+        showResults();
     } else if (currentQuestionIndex < 0) {
         // Invalid index, reset to 0
         currentQuestionIndex = 0;
@@ -258,68 +258,130 @@ function calculateResults() {
         };
     });
     
-    // Calculate section scores
+    // Calculate section scores (simple sum for new scoring system)
+    totalScore = 0;
     quizData.questions.forEach(question => {
         if (userAnswers[question.id]) {
             const section = sectionScores[question.section];
             section.score += userAnswers[question.id].score;
             section.count++;
-            section.maxScore += 10; // Assuming max score per question is 10
+            section.maxScore += 4; // Max score per question is now 4
+            totalScore += userAnswers[question.id].score; // Direct sum of all scores
         }
     });
     
-    // Calculate weighted total score
-    totalScore = 0;
-    quizData.sections.forEach(section => {
-        const sectionData = sectionScores[section.id];
-        if (sectionData.count > 0) {
-            const normalizedScore = (sectionData.score / sectionData.maxScore) * 100;
-            totalScore += normalizedScore * section.weight;
-        }
-    });
-    
-    totalScore = Math.round(totalScore);
+    // Total score is now the direct sum of all answer values (10-20 range)
 }
 
-// Show lead capture screen
-function showLeadCapture() {
-    showScreen('leadCaptureScreen');
-    // Keep progress bar visible
-    document.getElementById('progressContainer').style.display = 'block';
+// Display what the risk means for the user
+function displayRiskMeaning(riskLevel) {
+    const riskDetails = document.getElementById('riskDetails');
     
-    // Show risk level teaser
-    const riskLevel = getRiskLevel(totalScore);
-    const teaserIndicator = document.getElementById('scoreTeaserIndicator');
-    const teaserMessage = document.getElementById('scoreTeaserMessage');
-    
-    teaserIndicator.className = `score-indicator ${riskLevel.label.toLowerCase().replace(' ', '-')}`;
-    teaserMessage.textContent = `Your compliance risk level appears to be ${riskLevel.label.toUpperCase()}. Get your detailed breakdown and personalized action plan.`;
+    if (riskLevel.label === 'High Risk') {
+        riskDetails.innerHTML = `
+            <div class="risk-meaning-card high-risk">
+                <div class="risk-status-badge critical">
+                    <span class="badge-icon">🚨</span>
+                    <span class="badge-text">CRITICAL RISK LEVEL</span>
+                </div>
+                
+                <div class="risk-impacts">
+                    <div class="impact-item">
+                        <div class="impact-icon">⚡</div>
+                        <div class="impact-content">
+                            <h4>Audit Risk: <span class="highlight-red">VERY HIGH</span></h4>
+                            <p>73% chance of triggering an IRS audit based on your current practices</p>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-item">
+                        <div class="impact-icon">💰</div>
+                        <div class="impact-content">
+                            <h4>Financial Exposure: <span class="highlight-red">$10,000 - $50,000+</span></h4>
+                            <p>Potential penalties and back taxes you could face</p>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-item">
+                        <div class="impact-icon">⏰</div>
+                        <div class="impact-content">
+                            <h4>Action Required: <span class="highlight-red">WITHIN 30 DAYS</span></h4>
+                            <p>Critical compliance gaps need immediate attention</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="risk-summary">
+                    <p class="summary-text">Your business is operating with significant compliance vulnerabilities that put you at immediate risk of costly audits and penalties.</p>
+                </div>
+            </div>
+        `;
+    } else {
+        riskDetails.innerHTML = `
+            <div class="risk-meaning-card medium-risk">
+                <div class="risk-status-badge warning">
+                    <span class="badge-icon">⚠️</span>
+                    <span class="badge-text">MODERATE RISK LEVEL</span>
+                </div>
+                
+                <div class="risk-impacts">
+                    <div class="impact-item">
+                        <div class="impact-icon">⚡</div>
+                        <div class="impact-content">
+                            <h4>Audit Risk: <span class="highlight-yellow">MODERATE</span></h4>
+                            <p>45% chance of compliance issues escalating without intervention</p>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-item">
+                        <div class="impact-icon">💰</div>
+                        <div class="impact-content">
+                            <h4>Financial Exposure: <span class="highlight-yellow">$5,000 - $25,000</span></h4>
+                            <p>Potential penalties if issues aren't addressed</p>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-item">
+                        <div class="impact-icon">⏰</div>
+                        <div class="impact-content">
+                            <h4>Action Required: <span class="highlight-yellow">WITHIN 60 DAYS</span></h4>
+                            <p>Address these issues before they become critical</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="risk-summary">
+                    <p class="summary-text">Your business has compliance gaps that need attention. Taking action now can prevent these from becoming serious problems.</p>
+                </div>
+            </div>
+        `;
+    }
 }
 
-// Submit lead form
-function submitLeadForm(event) {
+// Submit consultation form
+function submitConsultForm(event) {
     event.preventDefault();
     
     // Collect form data
     const formData = {
-        email: document.getElementById('email').value,
-        firstName: document.getElementById('firstName').value,
-        companyName: document.getElementById('companyName').value,
-        employeeCount: document.getElementById('employeeCount').value,
-        phone: document.getElementById('phone').value || null,
+        email: document.getElementById('consultEmail').value,
+        name: document.getElementById('consultName').value,
+        company: document.getElementById('consultCompany').value,
+        phone: document.getElementById('consultPhone').value,
         score: totalScore,
+        riskLevel: getRiskLevel(totalScore).label,
         sectionScores: sectionScores,
         timestamp: new Date().toISOString()
     };
     
     // In production, send to backend API
-    console.log('Lead captured:', formData);
+    console.log('Consultation request:', formData);
     
     // Store locally for demo
-    localStorage.setItem('complianceQuizLead', JSON.stringify(formData));
+    localStorage.setItem('complianceConsultation', JSON.stringify(formData));
     
-    // Show results
-    showResults();
+    // Show thank you page
+    showScreen('thankYouScreen');
 }
 
 // Show results screen
@@ -328,28 +390,27 @@ function showResults() {
     // Hide progress bar on results
     document.getElementById('progressContainer').style.display = 'none';
     
-    // Display score
-    document.getElementById('finalScore').textContent = `${totalScore}/100`;
-    
-    // Get and display risk level
+    // Get risk level
     const riskLevel = getRiskLevel(totalScore);
+    
+    // Display score indicator (red or yellow circle)
+    const scoreIndicator = document.getElementById('scoreIndicator');
+    const riskIcon = riskLevel.label === 'High Risk' ? '🔴' : '🟡';
+    scoreIndicator.innerHTML = `<span style="font-size: 72px;">${riskIcon}</span>`;
+    
+    // Display score
+    document.getElementById('finalScore').textContent = `${totalScore}/20`;
+    
+    // Display risk level
     document.getElementById('riskLevel').textContent = riskLevel.label;
     document.getElementById('riskLevel').style.color = riskLevel.color;
     document.getElementById('riskMessage').textContent = riskLevel.message;
     
+    // Display what this means
+    displayRiskMeaning(riskLevel);
+    
     // Display category breakdown
     displayCategoryBreakdown();
-    
-    // Display immediate actions if high risk
-    if (totalScore > 50) {
-        displayImmediateActions();
-    } else {
-        // Hide immediate actions section for low risk
-        document.getElementById('immediateActions').style.display = 'none';
-    }
-    
-    // Update industry comparison
-    updateIndustryComparison();
 }
 
 // Get risk level based on score
@@ -371,16 +432,17 @@ function displayCategoryBreakdown() {
     const sortedSections = quizData.sections
         .map(section => {
             const sectionData = sectionScores[section.id];
+            // For new scoring: each question is 2-4 points
             const normalizedScore = sectionData.count > 0 
-                ? Math.round((sectionData.score / sectionData.maxScore) * 10)
+                ? sectionData.score
                 : 0;
             
             let riskLevel, riskLabel, riskClass;
-            if (normalizedScore > 7) {
+            if (normalizedScore >= 4) {
                 riskLevel = '🔴';
                 riskLabel = 'HIGH RISK';
                 riskClass = 'high-risk';
-            } else if (normalizedScore > 4) {
+            } else if (normalizedScore >= 3) {
                 riskLevel = '🟡';
                 riskLabel = 'MEDIUM RISK';
                 riskClass = 'medium-risk';
@@ -412,7 +474,7 @@ function displayCategoryBreakdown() {
                 <div class="risk-meter">
                     <span class="risk-label">${section.riskLabel}</span>
                     <div class="risk-bar">
-                        <div class="risk-bar-fill" style="width: ${section.normalizedScore * 10}%"></div>
+                        <div class="risk-bar-fill" style="width: ${(section.normalizedScore / 4) * 100}%"></div>
                     </div>
                 </div>
                 <span class="penalty-range">Potential Penalties: ${section.penaltyRange}</span>
@@ -423,6 +485,7 @@ function displayCategoryBreakdown() {
     });
 }
 
+// Removed immediate actions function  
 // Display immediate actions
 function displayImmediateActions() {
     const container = document.getElementById('immediateActions');
@@ -466,31 +529,34 @@ function displayImmediateActions() {
     container.appendChild(actionsList);
 }
 
+// Removed industry comparison function
 // Update industry comparison
 function updateIndustryComparison() {
     const yourScoreBar = document.getElementById('yourScoreBar');
     const yourScoreValue = document.getElementById('yourScoreValue');
     const comparisonMessage = document.getElementById('comparisonMessage');
     
-    yourScoreBar.style.width = `${totalScore}%`;
-    yourScoreValue.textContent = `${totalScore}/100`;
+    // Convert score to percentage for display (10-20 range mapped to 50-100%)
+    const displayPercent = ((totalScore - 10) / 10) * 50 + 50;
+    yourScoreBar.style.width = `${displayPercent}%`;
+    yourScoreValue.textContent = `${totalScore}/20`;
     
-    // Calculate percentile
+    // Calculate percentile based on new scoring
     let percentile;
-    if (totalScore <= 15) {
-        percentile = 'top 10%';
-    } else if (totalScore <= 45) {
+    if (totalScore <= 12) {
         percentile = 'top 50%';
-    } else if (totalScore <= 75) {
+    } else if (totalScore <= 14) {
+        percentile = 'bottom 50%';
+    } else if (totalScore <= 17) {
         percentile = 'bottom 30%';
     } else {
         percentile = 'bottom 10%';
     }
     
-    if (totalScore > 45) {
+    if (totalScore >= 15) {
         comparisonMessage.textContent = `You're in the ${percentile} highest risk businesses in your industry. The good news? This is 100% fixable.`;
     } else {
-        comparisonMessage.textContent = `You're performing better than average! Keep up the good work and stay vigilant.`;
+        comparisonMessage.textContent = `You have moderate compliance risks that need attention. Taking action now can prevent serious issues later.`;
     }
 }
 
